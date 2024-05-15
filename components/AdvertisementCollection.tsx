@@ -24,11 +24,12 @@ import {
 } from "@heroicons/react/20/solid";
 import React from "react";
 
-export default function AdvertisementCollection({
-  items,
-}: {
-  items: Object[];
-}) {
+export type Items = {
+  title: string;
+  badges: string[];
+};
+
+export default function AdvertisementCollection({ items }: { items: Items[] }) {
   const [show, setShow] = React.useState(false);
 
   return (
