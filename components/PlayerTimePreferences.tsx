@@ -8,6 +8,7 @@ import {
   Heading,
   SwitchField,
   Fieldset,
+  Grid,
 } from "@aws-amplify/ui-react";
 
 export default function PlayerTimePreferencesComponent() {
@@ -18,7 +19,7 @@ export default function PlayerTimePreferencesComponent() {
           🕐 <Heading level={5}>Preferencias de horario</Heading>
         </Flex>
 
-        <Fieldset legend="Días y horarios preferidos" variation="outlined">
+        <Grid templateColumns={["1fr", "1fr 1fr 1fr"]} gap="small">
           {[
             "monday",
             "tuesday",
@@ -29,7 +30,7 @@ export default function PlayerTimePreferencesComponent() {
             "sunday",
           ]?.map((day, idx) => {
             return (
-              <Flex key={idx} direction="column" gap="xs" alignItems="start">
+              <Flex key={idx} direction="column" gap="xs">
                 <SwitchField label={day} labelPosition="end" />
                 <Flex direction="row" gap="xs">
                   <Input id={`startTime.${day}`} type="time" size="small" />
@@ -38,7 +39,7 @@ export default function PlayerTimePreferencesComponent() {
               </Flex>
             );
           })}
-        </Fieldset>
+        </Grid>
 
         <Button type="submit" variation="primary">
           💾 Guardar preferencias
