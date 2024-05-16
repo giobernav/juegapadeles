@@ -2,17 +2,38 @@
 
 import { addTodo } from "@/utils/actions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { type Schema } from "@/amplify/data/resource";
-import { Button, Flex, Input } from "@aws-amplify/ui-react";
+import type { Schema } from "@/amplify/data/resource";
+import { Button, Flex, View } from "@aws-amplify/ui-react";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { TodoFormSchemaInputType, todoFormSchema } from "@/schemas/schema";
+import Input from "./common/Input";
 
 type Todo = Schema["Todo"]["type"];
 
 export function AddTodoForm() {
   const queryClient = useQueryClient();
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<TodoFormSchemaInputType>({
+    resolver: zodResolver(todoFormSchema, {}, { raw: true }),
+    defaultValues: {
+      title: "",
+    },
+  });
+  console.log("errors", errors);
+
+  const onSubmit: SubmitHandler<TodoFormSchemaInputType> = (data) => {
+    createMutation.mutate(data);
+  };
+
   const createMutation = useMutation({
-    mutationFn: async (formData: FormData) => {
-      const { data: newTodo } = await addTodo(formData);
+    mutationFn: async (input: TodoFormSchemaInputType) => {
+      const { data: newTodo } = await addTodo(input);
       return newTodo;
     },
     // When mutate is called:
@@ -29,7 +50,7 @@ export function AddTodoForm() {
       if (previousTodos) {
         queryClient.setQueryData(["todos"], (old: Todo[]) => [
           ...old,
-          { content: newTodo.get("title") },
+          { content: newTodo.title },
         ]);
       }
 
@@ -58,23 +79,33 @@ export function AddTodoForm() {
       ) : null}
 
       {createMutation.isSuccess ? <div>Todo added!</div> : null}
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          createMutation.mutate(new FormData(e.currentTarget));
-        }}
-      >
+      <View as="form" onSubmit={handleSubmit(onSubmit)}>
         <Flex
           justifyContent="space-between"
+          alignItems="start"
           direction={{ base: "column", large: "row" }}
           gap="small"
         >
-          <Input type="text" name="title" />
-          <Button type="submit" variation="primary" isFullWidth>
-            Add Todo
+          <Input
+            type="text"
+            placeholder="Todo content..."
+            width="100%"
+            label="Title"
+            labelHidden
+            {...register("title")}
+            error={errors.title?.message}
+          />
+          <Button
+            type="submit"
+            variation="primary"
+            whiteSpace="nowrap"
+            isLoading={isSubmitting}
+            loadingText="Submitting..."
+          >
+            Add todo
           </Button>
         </Flex>
-      </form>
+      </View>
     </>
   );
 }
