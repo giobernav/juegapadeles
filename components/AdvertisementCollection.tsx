@@ -15,6 +15,7 @@ import {
   Badge,
   Link,
 } from "@aws-amplify/ui-react";
+import NextLink from "next/link";
 
 import {
   MapPinIcon,
@@ -114,6 +115,7 @@ export default function AdvertisementCollection({ items }: { items: Items[] }) {
                   a 2,3 km.
                 </Badge>
               </Flex>
+
               <View>
                 <Link href="#" fontWeight="bold">
                   <MapPinIcon width={14} /> Arena Rio Padel
@@ -121,6 +123,19 @@ export default function AdvertisementCollection({ items }: { items: Items[] }) {
                 <Text fontSize="small">
                   C. de la Verdad, 20, Carabanchel, 28019 Madrid
                 </Text>
+                <Flex gap="0.5rem">
+                  <Text fontSize="small" fontWeight="bold" color="blue.90">
+                    Mañana
+                  </Text>{" "}
+                  <Text
+                    as="time"
+                    fontSize="small"
+                    fontWeight="bold"
+                    color="blue.90"
+                  >
+                    14:30 horas
+                  </Text>
+                </Flex>
               </View>
 
               <Divider />
@@ -139,7 +154,9 @@ export default function AdvertisementCollection({ items }: { items: Items[] }) {
                       2,00 €
                     </Text>
                   </Flex>
-                  <Button isFullWidth>Más info</Button>
+                  <Button as={NextLink} isFullWidth href={`/ads/${index}`}>
+                    Más info
+                  </Button>
                   <Text fontSize="xs" textAlign="center">
                     Quedan{" "}
                     <Text variation="info" as="span">

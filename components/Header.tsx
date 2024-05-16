@@ -43,11 +43,9 @@ export default function Header() {
             </MenuItem>
             <MenuItem
               as={Link}
-              href="/new-match"
-              backgroundColor={
-                pathname === "/new-match" ? "blue.80" : undefined
-              }
-              color={pathname === "/new-match" ? "neutral.10" : undefined}
+              href="/ads/new"
+              backgroundColor={pathname === "/ads/new" ? "blue.80" : undefined}
+              color={pathname === "/ads/new" ? "neutral.10" : undefined}
             >
               <PlusIcon width={20} style={{ marginRight: 8 }} />
               Nuevo Partido
@@ -105,8 +103,8 @@ export default function Header() {
           </Button>
           <Button
             as={Link}
-            href="/new-match"
-            variation={pathname === "/new-match" ? "primary" : undefined}
+            href="/ads/new"
+            variation={pathname === "/ads/new" ? "primary" : undefined}
           >
             <PlusIcon width={20} style={{ marginRight: !isMobile ? 8 : 0 }} />
             {!isMobile ? "Nuevo" : null}

@@ -7,7 +7,6 @@ import {
   Input,
   Heading,
   SwitchField,
-  Fieldset,
   Grid,
 } from "@aws-amplify/ui-react";
 
