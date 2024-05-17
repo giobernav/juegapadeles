@@ -3,8 +3,8 @@ import { ThemeProvider } from "next-themes";
 import { Space_Mono } from "next/font/google";
 import { Providers } from "@/components/Providers";
 
-import "@aws-amplify/ui-react/styles.css";
 import "./app.css";
+import "@aws-amplify/ui-react/styles.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -21,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="es" suppressHydrationWarning>
       <head />
       <body className={spaceMono.className}>
         <ThemeProvider>

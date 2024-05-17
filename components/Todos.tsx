@@ -1,14 +1,13 @@
 "use client";
 
 import {
-  QueryClient,
+  UseSuspenseQueryResult,
   useMutation,
+  useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { generateClient } from "aws-amplify/data";
-
 import { type Schema } from "@/amplify/data/resource";
-import { deleteTodo } from "@/utils/actions";
+import { listTodos, deleteTodo } from "@/utils/actions";
 import {
   Button,
   Card,
@@ -19,12 +18,10 @@ import {
 } from "@aws-amplify/ui-react";
 import { XMarkIcon } from "@heroicons/react/16/solid";
 
-const client = generateClient<Schema>();
-
 type Todo = Schema["Todo"]["type"];
 
 function TodoItem({ todo }: { todo: Todo }) {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
 
   const deleteMutation = useMutation({
     mutationFn: async (todoDetails: { id: string }) => {
@@ -86,18 +83,42 @@ function TodoItem({ todo }: { todo: Todo }) {
   );
 }
 
+function TodosTable({
+  isLoading,
+  isError,
+  isSuccess,
+  data,
+  error,
+}: UseSuspenseQueryResult<Todo[]>) {
+  return (
+    <Table highlightOnHover={true}>
+      <TableBody>
+        {isLoading && (
+          <TableRow>
+            <TableCell>{"Loading todos..."}</TableCell>
+          </TableRow>
+        )}
+        {isError && (
+          <TableRow>
+            <TableCell>{error?.message || "Problem loading todos"}</TableCell>
+          </TableRow>
+        )}
+
+        {isSuccess &&
+          data.map((todo, idx) => {
+            if (!todo) return null;
+            return <TodoItem key={`${idx}-${todo.id}`} todo={todo} />;
+          })}
+      </TableBody>
+    </Table>
+  );
+}
+
 export default function Todos() {
-  const {
-    data: todos,
-    isLoading,
-    isSuccess,
-    isError,
-  } = useSuspenseQuery({
+  const query = useSuspenseQuery({
     queryKey: ["todos"],
     queryFn: async () => {
-      const response = await client.models.Todo.list({
-        authMode: "identityPool",
-      });
+      const response = await listTodos();
       const allTodos = response.data;
       if (!allTodos) return [];
       return allTodos;
@@ -111,26 +132,9 @@ export default function Todos() {
       marginBottom={16}
       style={{ padding: 0 }}
     >
-      <Table highlightOnHover={true}>
-        <TableBody>
-          {isLoading && (
-            <TableRow>
-              <TableCell>{"Loading Todos..."}</TableCell>
-            </TableRow>
-          )}
-          {isError && (
-            <TableRow>
-              <TableCell>{"Problem loading Todos"}</TableCell>
-            </TableRow>
-          )}
-
-          {isSuccess &&
-            todos.map((todo, idx) => {
-              if (!todo) return null;
-              return <TodoItem key={`${idx}-${todo.id}`} todo={todo} />;
-            })}
-        </TableBody>
-      </Table>
+      <TodosTable {...query} />
     </Card>
   );
+
+  return null;
 }

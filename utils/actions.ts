@@ -11,10 +11,14 @@ import { todoFormSchema, TodoFormSchemaInputType } from "@/schemas/schema";
 // type Todo = SelectionSet<Schema["Todo"]["type"], typeof selectionSet>;
 
 export async function listTodos() {
-  const response = await cookiesClient.models.Todo.list({
-    authMode: "identityPool",
-  });
-  return response;
+  try {
+    const response = await cookiesClient.models.Todo.list({
+      authMode: "identityPool",
+    });
+    return response;
+  } catch (error: any) {
+    throw new Error(error || "Error querying todos");
+  }
 }
 
 export async function addTodo(data: TodoFormSchemaInputType) {
@@ -23,14 +27,18 @@ export async function addTodo(data: TodoFormSchemaInputType) {
   if (parsed.success) {
     const parsedData = parsed.data;
 
-    const response = await cookiesClient.models.Todo.create(
-      { content: parsedData.title },
-      {
-        authMode: "userPool",
-      }
-    );
-    revalidatePath("/");
-    return response;
+    try {
+      const response = await cookiesClient.models.Todo.create(
+        { content: parsedData.title },
+        {
+          authMode: "userPool",
+        }
+      );
+      // revalidatePath("/");
+      return response;
+    } catch (error: any) {
+      throw new Error(error || "Error creating todo");
+    }
   } else {
     throw new Error("Validation error");
   }

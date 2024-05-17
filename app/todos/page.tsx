@@ -3,19 +3,19 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import { AuthGetCurrentUserServer } from "@/utils/amplify-utils";
+// import { AuthGetCurrentUserServer } from "@/utils/amplify-utils";
 import { AddTodoForm } from "@/components/AddTodoForm";
 import Todos from "@/components/Todos";
 import { Suspense } from "react";
 import { listTodos } from "@/utils/actions";
 
-export default async function TodosPage() {
-  const user = await AuthGetCurrentUserServer();
-  console.log("user", user);
+export default function TodosPage() {
+  // let user = await AuthGetCurrentUserServer();
+  // console.log("user", user);
 
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
+  queryClient.prefetchQuery({
     queryKey: ["todos"],
     queryFn: async () => {
       const response = await listTodos();
@@ -29,11 +29,11 @@ export default async function TodosPage() {
     <>
       <AddTodoForm />
 
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <Suspense fallback={<div>Loading todos...</div>}>
+      <Suspense fallback={<div>Loading todos server...</div>}>
+        <HydrationBoundary state={dehydrate(queryClient)}>
           <Todos />
-        </Suspense>
-      </HydrationBoundary>
+        </HydrationBoundary>
+      </Suspense>
 
       <div>
         🥳 App successfully hosted. Try creating a new todo.

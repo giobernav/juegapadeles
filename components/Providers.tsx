@@ -3,7 +3,7 @@
 import { useEffect, useState, ReactNode } from "react";
 import { ColorMode, Flex, ThemeProvider } from "@aws-amplify/ui-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
 import ConfigureAmplifyClientSide from "./ConfigureAmplify";
 import customTheme from "@/utils/theme";
@@ -37,9 +37,8 @@ function getQueryClient() {
   }
 }
 
-export function Providers({ children }: { children: ReactNode }) {
+function CustomThemeProvider({ children }: { children: ReactNode }) {
   const [mounted, setMounted] = useState(false);
-  const queryClient = getQueryClient();
   const { theme } = useTheme();
 
   // useEffect only runs on the client, so now we can safely show the UI
@@ -53,15 +52,23 @@ export function Providers({ children }: { children: ReactNode }) {
 
   return (
     <ThemeProvider theme={customTheme} colorMode={theme as ColorMode}>
-      <QueryClientProvider client={queryClient}>
-        <ConfigureAmplifyClientSide />
-        <ReactQueryStreamedHydration>
-          <Flex as="main" direction="column" padding="small">
-            {children}
-          </Flex>
-        </ReactQueryStreamedHydration>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
+      <ConfigureAmplifyClientSide />
+      <Flex as="main" direction="column" padding="small">
+        {children}
+      </Flex>
     </ThemeProvider>
+  );
+}
+
+export function Providers({ children }: { children: ReactNode }) {
+  const queryClient = getQueryClient();
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryStreamedHydration>
+        <CustomThemeProvider>{children}</CustomThemeProvider>
+      </ReactQueryStreamedHydration>
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+    </QueryClientProvider>
   );
 }

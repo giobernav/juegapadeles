@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { addTodo } from "@/utils/actions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Schema } from "@/amplify/data/resource";
@@ -18,14 +19,20 @@ export function AddTodoForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    reset,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<TodoFormSchemaInputType>({
     resolver: zodResolver(todoFormSchema, {}, { raw: true }),
     defaultValues: {
       title: "",
     },
   });
-  console.log("errors", errors);
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful, reset]);
 
   const onSubmit: SubmitHandler<TodoFormSchemaInputType> = (data) => {
     createMutation.mutate(data);
@@ -45,7 +52,6 @@ export function AddTodoForm() {
       // Snapshot the previous value
       const previousTodos = queryClient.getQueryData(["todos"]);
 
-      console.log("newTodo", newTodo);
       // Optimistically update to the new value
       if (previousTodos) {
         queryClient.setQueryData(["todos"], (old: Todo[]) => [

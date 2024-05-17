@@ -20,7 +20,7 @@ export default forwardRef<HTMLInputElement, Props>(function Input(
   ref
 ) {
   return (
-    <Flex flex={1} direction="column" gap="xs">
+    <Flex flex={1} width="100%" direction="column" gap="xs">
       {labelHidden ? null : (
         <Label htmlFor={name}>
           {label}
