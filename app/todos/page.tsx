@@ -3,16 +3,12 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-// import { AuthGetCurrentUserServer } from "@/utils/amplify-utils";
 import { AddTodoForm } from "@/components/AddTodoForm";
 import Todos from "@/components/Todos";
 import { Suspense } from "react";
 import { listTodos } from "@/utils/actions";
 
 export default function TodosPage() {
-  // let user = await AuthGetCurrentUserServer();
-  // console.log("user", user);
-
   const queryClient = new QueryClient();
 
   queryClient.prefetchQuery({

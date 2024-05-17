@@ -52,7 +52,7 @@ export async function deleteTodo(id: string) {
     );
     revalidatePath("/");
     return response;
-  } catch (error) {
+  } catch (error: any) {
     throw new Error(error || "Error deleting todo");
   }
 }
