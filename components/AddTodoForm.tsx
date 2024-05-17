@@ -81,7 +81,7 @@ export function AddTodoForm() {
     <>
       {createMutation.isPending && "Adding Todo..."}
       {createMutation.isError && createMutation.error instanceof Error ? (
-        <div>An error occurred: {createMutation.error.message}</div>
+        <div>An error occurred: Error creating todo.</div>
       ) : null}
 
       {createMutation.isSuccess ? <div>Todo added!</div> : null}

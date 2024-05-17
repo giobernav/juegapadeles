@@ -45,10 +45,14 @@ export async function addTodo(data: TodoFormSchemaInputType) {
 }
 
 export async function deleteTodo(id: string) {
-  const response = await cookiesClient.models.Todo.delete(
-    { id },
-    { authMode: "userPool" }
-  );
-  revalidatePath("/");
-  return response;
+  try {
+    const response = await cookiesClient.models.Todo.delete(
+      { id },
+      { authMode: "userPool" }
+    );
+    revalidatePath("/");
+    return response;
+  } catch (error) {
+    throw new Error(error || "Error deleting todo");
+  }
 }

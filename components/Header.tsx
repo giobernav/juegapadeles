@@ -11,15 +11,17 @@ import {
   useBreakpointValue,
 } from "@aws-amplify/ui-react";
 import {
+  ArrowLeftEndOnRectangleIcon,
   AdjustmentsHorizontalIcon,
   MagnifyingGlassIcon,
   PlusIcon,
   UserIcon,
 } from "@heroicons/react/20/solid";
+import { AuthUser } from "aws-amplify/auth";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function Header() {
+export default function Header({ user }: { user?: AuthUser }) {
   const isMobile = useBreakpointValue([true, true, false, false]);
   const pathname = usePathname();
 
@@ -76,6 +78,21 @@ export default function Header() {
               />
               Preferencias
             </MenuItem>
+
+            {!user ? (
+              <MenuItem
+                as={Link}
+                href="/login"
+                backgroundColor={pathname === "/login" ? "blue.80" : undefined}
+                color={pathname === "/login" ? "neutral.10" : undefined}
+              >
+                <ArrowLeftEndOnRectangleIcon
+                  width={20}
+                  style={{ marginRight: 8 }}
+                />
+                Inicia sesión/Regístrate
+              </MenuItem>
+            ) : null}
           </Menu>
 
           {/* <Image

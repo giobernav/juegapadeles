@@ -7,6 +7,7 @@ import "./app.css";
 import "@aws-amplify/ui-react/styles.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { AuthGetCurrentUserServer } from "@/utils/amplify-utils";
 
 const spaceMono = Space_Mono({ subsets: ["latin"], weight: ["400", "700"] });
 
@@ -15,18 +16,20 @@ export const metadata: Metadata = {
   description: "Crea partidos de pádel y encuentra compañeros de juego.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const user = await AuthGetCurrentUserServer();
+
   return (
     <html lang="es" suppressHydrationWarning>
       <head />
       <body className={spaceMono.className}>
         <ThemeProvider>
           <Providers>
-            <Header />
+            <Header user={user} />
             {children}
             <Footer />
           </Providers>

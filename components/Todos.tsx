@@ -72,7 +72,7 @@ function TodoItem({ todo }: { todo: Todo }) {
         {todo.content}|{todo.owner}{" "}
         {deleteMutation.isPending && "Deleting Todo..."}
         {deleteMutation.isError && deleteMutation.error instanceof Error
-          ? `An error occurred: ${deleteMutation.error.message}`
+          ? `An error occurred: Error deleting todo.`
           : null}
         {deleteMutation.isSuccess ? "Todo deleted!" : null}
         <Button onClick={() => deleteMutation.mutate({ id: todo.id })}>
