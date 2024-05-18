@@ -5,26 +5,25 @@ import {
   Button,
   ButtonGroup,
   Flex,
+  useAuthenticator,
   useBreakpointValue,
   useTheme,
 } from "@aws-amplify/ui-react";
 import Link from "next/link";
 import Logout from "@/components/Logout";
 import { usePathname } from "next/navigation";
-import { AuthUser } from "aws-amplify/auth";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/20/solid";
 
 export default function ProfileLayoutComponent({
-  user,
   children, // will be a page or nested layout
 }: {
-  user?: AuthUser;
   children: React.ReactNode;
 }) {
   const { tokens } = useTheme();
   const pathname = usePathname();
   const [show, setShow] = useState(false);
   const isMobile = useBreakpointValue([true, true, false, false]);
+  const { user } = useAuthenticator((context) => [context.user]);
 
   const commonOpts = {
     as: Link,

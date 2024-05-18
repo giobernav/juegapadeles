@@ -46,5 +46,5 @@ a {
   position: fixed;
   top: var(--amplify-components-authenticator-modal-top);
   left: var(--amplify-components-authenticator-modal-left);
-  z-index: 5;
+  z-index: 5 !important;
 }

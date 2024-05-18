@@ -8,7 +8,6 @@ import "@aws-amplify/ui-react/styles.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import { AuthGetCurrentUserServer } from "@/utils/amplify-utils";
 
 const spaceMono = Space_Mono({ subsets: ["latin"], weight: ["400", "700"] });
 
@@ -24,15 +23,13 @@ export default async function RootLayout({
   auth: React.ReactNode;
   children: React.ReactNode;
 }) {
-  const user = await AuthGetCurrentUserServer();
-
   return (
     <html lang="es" suppressHydrationWarning>
       <head />
       <body className={spaceMono.className}>
         <ThemeProvider>
           <Providers>
-            <Header user={user} />
+            <Header />
             {children}
             {auth}
             <Footer />

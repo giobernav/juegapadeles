@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import {
   Button,
   View,
@@ -7,9 +8,7 @@ import {
   withAuthenticator,
 } from "@aws-amplify/ui-react";
 import { AuthUser } from "aws-amplify/auth";
-import NextLink from "next/link";
 import { redirect } from "next/navigation";
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 function LoginModal({ user }: { user?: AuthUser }) {

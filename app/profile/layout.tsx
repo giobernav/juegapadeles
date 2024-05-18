@@ -6,9 +6,5 @@ export default async function ProfileLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await AuthGetCurrentUserServer();
-
-  return (
-    <ProfileLayoutComponent user={user}>{children}</ProfileLayoutComponent>
-  );
+  return <ProfileLayoutComponent>{children}</ProfileLayoutComponent>;
 }

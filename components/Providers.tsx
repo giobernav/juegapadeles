@@ -52,10 +52,11 @@ function CustomThemeProvider({ children }: { children: ReactNode }) {
 
   return (
     <ThemeProvider theme={customTheme} colorMode={theme as ColorMode}>
-      <ConfigureAmplifyClientSide />
-      <Flex as="main" direction="column" padding="small">
-        {children}
-      </Flex>
+      <ConfigureAmplifyClientSide>
+        <Flex as="main" direction="column" padding="small">
+          {children}
+        </Flex>
+      </ConfigureAmplifyClientSide>
     </ThemeProvider>
   );
 }

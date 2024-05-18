@@ -17,13 +17,14 @@ import {
   PlusIcon,
   UserIcon,
 } from "@heroicons/react/20/solid";
-import { AuthUser } from "aws-amplify/auth";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuthenticator } from "@aws-amplify/ui-react";
 
-export default function Header({ user }: { user?: AuthUser }) {
+export default function Header() {
   const isMobile = useBreakpointValue([true, true, false, false]);
   const pathname = usePathname();
+  const { user } = useAuthenticator((context) => [context.user]);
 
   return (
     <Card

@@ -11,7 +11,7 @@ export default function Logout() {
     <Button
       onClick={async () => {
         await signOut();
-        router.push("/login");
+        router.push("/");
       }}
       variation="warning"
     >
