@@ -1,10 +1,12 @@
 "use client";
 
 import {
-  UseSuspenseQueryResult,
+  UseQueryResult,
+  // UseSuspenseQueryResult,
   useMutation,
+  useQuery,
   useQueryClient,
-  useSuspenseQuery,
+  // useSuspenseQuery,
 } from "@tanstack/react-query";
 import { type Schema } from "@/amplify/data/resource";
 import { listTodos, deleteTodo } from "@/utils/actions";
@@ -89,7 +91,7 @@ function TodosTable({
   isSuccess,
   data,
   error,
-}: UseSuspenseQueryResult<Todo[]>) {
+}: UseQueryResult<Todo[]>) {
   return (
     <Table highlightOnHover={true}>
       <TableBody>
@@ -115,7 +117,7 @@ function TodosTable({
 }
 
 export default function Todos() {
-  const query = useSuspenseQuery({
+  const query = useQuery({
     queryKey: ["todos"],
     queryFn: async () => {
       const response = await listTodos();

@@ -54,6 +54,11 @@ const theme = {
       },
     },
     components: {
+      authenticator: {
+        zIndex: { value: 4 },
+        router: {},
+        form: {},
+      },
       card: {
         boxShadow: { value: "{shadows.medium.value}" },
       },

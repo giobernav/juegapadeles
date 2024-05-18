@@ -35,3 +35,16 @@ a {
   font-weight: 800;
   text-decoration: none;
 }
+
+[data-amplify-authenticator][data-variation="modal"] {
+  overflow-y: auto;
+  width: var(--amplify-components-authenticator-modal-width);
+  height: var(--amplify-components-authenticator-modal-height);
+  background-color: var(
+    --amplify-components-authenticator-modal-background-color
+  );
+  position: fixed;
+  top: var(--amplify-components-authenticator-modal-top);
+  left: var(--amplify-components-authenticator-modal-left);
+  z-index: 5;
+}

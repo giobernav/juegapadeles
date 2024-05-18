@@ -7,6 +7,7 @@ import "./app.css";
 import "@aws-amplify/ui-react/styles.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Link from "next/link";
 import { AuthGetCurrentUserServer } from "@/utils/amplify-utils";
 
 const spaceMono = Space_Mono({ subsets: ["latin"], weight: ["400", "700"] });
@@ -17,8 +18,10 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({
+  auth,
   children,
 }: {
+  auth: React.ReactNode;
   children: React.ReactNode;
 }) {
   const user = await AuthGetCurrentUserServer();
@@ -31,6 +34,7 @@ export default async function RootLayout({
           <Providers>
             <Header user={user} />
             {children}
+            {auth}
             <Footer />
           </Providers>
         </ThemeProvider>
